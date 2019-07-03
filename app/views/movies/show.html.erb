@@ -14,7 +14,7 @@
    
     <div class="movie-details">
       <span class="movie-rating">R</span>
-      <span class="movie-duration">2h 1min</span>
+      <span class="movie-duration"><%= @movie.run_time %></span>
       <span class="movie-genre"> <%= @movie.genre %> </span>
     </div>
 
@@ -31,11 +31,26 @@
     <div class="movie-castcrew">
       <span class="title">Actors</span>
     </div>
+
+    <div class="row">
+      <div class="movie-castcrew col-6">
+        <% @movie.actors.each do |actor| %>
+          <div class="profile-header-container col-sm-3">   
+            <div class="profile-header-img">
+              <%= image_tag user_avatar(actor, 50), class: "img-circle" %>
+              <div class="rank-label-container">
+                <span class="label label-default rank-label"> <%= actor.name %> </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
     
     <div class="movie-synopsis"> 
       <%=raw @movie.description %> 
     </div>
-    
+
     <button class="movie-trailer-btn play-trailer" type="button">play trailer</button>
   </div>
   
