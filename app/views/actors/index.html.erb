@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Actors</h1>
+<div class="row">
+  <% @actors.each do |actor| %>
+    <div class="col-sm-4">
+      <%= render partial: 'index', locals: { actor: actor } %>
+     </div>
+  <% end %>
+  </div>
+<br>
+<%= link_to 'New Actor', new_actor_path %>
