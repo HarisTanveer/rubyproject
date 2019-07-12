@@ -1,15 +1,19 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy]
+  before_action :set_movie, only: [:show, :edit, :update, :destroy, :delete_image, :addActor]
+  before_action :authenticate_user!
+  before_action :authenticate_admin!, only: [:create, :edit, :update, :destroy, :addActor, :delete_image, :new] 
 
   # GET /movies
   # GET /movies.json
   def index
-    @movies = Movie.all
+    @movies = Movie.order(:title).page params[:page]
   end
 
   # GET /movies/1
   # GET /movies/1.json
   def show
+    @reviews = @movie.reviews.order(:timestamp).page params[:page]
+    @reported_reviews = current_user.reported_reviews.where(movie: @movie).pluck(:review_id)
   end
 
   # GET /movies/new
@@ -62,6 +66,18 @@ class MoviesController < ApplicationController
     end
   end
 
+  def addActor
+    @movie.actors << Actor.find(params[:actor_id])
+  end
+
+  def delete_image
+    respond_to do |format|
+      @image=@movie.images.find(params[:image_id])
+      @image.purge
+      format.js { render :delete_image }
+    end
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_movie
@@ -70,6 +86,10 @@ class MoviesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
-      params.require(:movie).permit(:title, :description, :genre, :release_date, :rating, :trailer ,images: [])
+      params.require(:movie).permit(:title, :description, :genre, :release_date, :rating, :trailer , :director, :writer, :run_time, images: [])
+    end
+
+    def authenticate_admin!
+      redirect_to root_path unless current_user.admin?
     end
 end

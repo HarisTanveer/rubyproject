@@ -29,13 +29,12 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise'
 gem 'bootstrap-sass'
-gem 'jquery-turbolinks'
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
 gem 'mini_magick'
 gem 'ckeditor'
-gem 'select2-rails'
 gem 'coffee-rails'
+gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
